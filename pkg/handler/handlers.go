@@ -16,8 +16,8 @@ var URL = "https://api.telegram.org/bot1822246375:AAFBs9rUJ1wHJpweTlFHSOPuVXUfJQ
 func InitRoutes() {
 	router := gin.Default()
 
-	router.GET("/sendgroup", SendGroupChat)
-	router.GET("/sendchannel", SendChannel)
+	router.POST("/sendgroup", SendGroupChat)
+	router.POST("/sendchannel", SendChannel)
 
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	router.Run()
@@ -30,7 +30,7 @@ func InitRoutes() {
 // @Accept  json
 // @Produce  json
 // @Param text query string true "message text"
-// @Router /sendgroup [get]
+// @Router /sendgroup [post]
 func SendGroupChat(c *gin.Context) {
 	client := http.Client{}
 
@@ -51,7 +51,7 @@ func SendGroupChat(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param text query string true "message text"
-// @Router /sendchannel [get]
+// @Router /sendchannel [post]
 func SendChannel(c *gin.Context) {
 	client := http.Client{}
 
