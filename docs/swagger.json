@@ -10,7 +10,7 @@
     "basePath": "/",
     "paths": {
         "/sendchannel": {
-            "get": {
+            "post": {
                 "description": "Send message to channel",
                 "consumes": [
                     "application/json"
@@ -32,7 +32,7 @@
             }
         },
         "/sendgroup": {
-            "get": {
+            "post": {
                 "description": "Send message to group chat",
                 "consumes": [
                     "application/json"

@@ -24,7 +24,7 @@ var doc = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/sendchannel": {
-            "get": {
+            "post": {
                 "description": "Send message to channel",
                 "consumes": [
                     "application/json"
@@ -46,7 +46,7 @@ var doc = `{
             }
         },
         "/sendgroup": {
-            "get": {
+            "post": {
                 "description": "Send message to group chat",
                 "consumes": [
                     "application/json"
