@@ -1,0 +1,57 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Send messages to telegram group or channel",
+        "title": "Telegram Bot task",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/sendchannel": {
+            "get": {
+                "description": "Send message to channel",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Send message",
+                "operationId": "send-message-channel",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "message text",
+                        "name": "text",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        "/sendgroup": {
+            "get": {
+                "description": "Send message to group chat",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Send message",
+                "operationId": "send-message-group-chat",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "message text",
+                        "name": "text",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    }
+}

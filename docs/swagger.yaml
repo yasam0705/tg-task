@@ -1,0 +1,39 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: Send messages to telegram group or channel
+  title: Telegram Bot task
+  version: "1.0"
+paths:
+  /sendchannel:
+    get:
+      consumes:
+      - application/json
+      description: Send message to channel
+      operationId: send-message-channel
+      parameters:
+      - description: message text
+        in: query
+        name: text
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: Send message
+  /sendgroup:
+    get:
+      consumes:
+      - application/json
+      description: Send message to group chat
+      operationId: send-message-group-chat
+      parameters:
+      - description: message text
+        in: query
+        name: text
+        required: true
+        type: string
+      produces:
+      - application/json
+      summary: Send message
+swagger: "2.0"
