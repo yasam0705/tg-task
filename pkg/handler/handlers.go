@@ -41,8 +41,6 @@ func SendGroupChat(c *gin.Context) {
 			log.Fatal(err)
 		}
 	})
-
-	fmt.Fprintf(c.Writer, "<h1>Send message to telegram group</h1>")
 }
 
 // @Summary Send message
@@ -55,13 +53,13 @@ func SendGroupChat(c *gin.Context) {
 func SendChannel(c *gin.Context) {
 	client := http.Client{}
 
-	res, err := sendRequest(&client, URL, "-1001652337843", c.Query("text"))
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Fprintf(c.Writer, "<h1>Send message to telegram channel</h1>")
-	fmt.Fprint(c.Writer, res)
+	var tt time.Duration = 5 * time.Second
+	time.AfterFunc(tt, func() {
+		_, err := sendRequest(&client, URL, "-1001652337843", c.Query("text"))
+		if err != nil {
+			log.Fatal(err)
+		}
+	})
 }
 
 func sendRequest(cl *http.Client, url, chatId, text string) (*http.Response, error) {
