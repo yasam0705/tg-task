@@ -24,23 +24,29 @@ func InitRoutes() {
 
 }
 
+var priorityTable = map[string][]*http.Request{
+	"low":    make([]*http.Request, 0),
+	"medium": make([]*http.Request, 0),
+	"high":   make([]*http.Request, 0),
+}
+
 // @Summary Send message
 // @Description Send message to group chat
 // @ID send-message-group-chat
 // @Accept  json
 // @Produce  json
 // @Param text query string true "message text"
+// @Param priority query string true "priority message"
 // @Router /sendgroup [post]
 func SendGroupChat(c *gin.Context) {
 	client := http.Client{}
 
-	var tt time.Duration = 5 * time.Second
-	time.AfterFunc(tt, func() {
-		_, err := sendRequest(&client, URL, "-1001317290790", c.Query("text"))
-		if err != nil {
-			log.Fatal(err)
-		}
-	})
+	err := createRequest(&client, URL, "-1001317290790", c.Query("text"), c.Query("priority"))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	doRequest(&client)
 }
 
 // @Summary Send message
@@ -49,31 +55,47 @@ func SendGroupChat(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param text query string true "message text"
+// @Param priority query string true "priority message"
 // @Router /sendchannel [post]
 func SendChannel(c *gin.Context) {
 	client := http.Client{}
 
-	var tt time.Duration = 5 * time.Second
-	time.AfterFunc(tt, func() {
-		_, err := sendRequest(&client, URL, "-1001652337843", c.Query("text"))
-		if err != nil {
-			log.Fatal(err)
-		}
-	})
+	err := createRequest(&client, URL, "-1001652337843", c.Query("text"), c.Query("priority"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	doRequest(&client)
 }
 
-func sendRequest(cl *http.Client, url, chatId, text string) (*http.Response, error) {
+func createRequest(cl *http.Client, url, chatId, text, priority string) error {
 	post_url := fmt.Sprintf("%s%schat_id=%s&text=%s", url, "sendMessage?", chatId, text)
 
 	req, err := http.NewRequest("POST", post_url, nil)
 	if err != nil {
-		return &http.Response{}, err
+		return err
 	}
 
-	res, err := cl.Do(req)
-	if err != nil {
-		return &http.Response{}, err
-	}
+	priorityTable[priority] = append(priorityTable[priority], req)
 
-	return res, err
+	return err
+}
+
+func doRequest(cl *http.Client) {
+	time.AfterFunc(20*time.Second, func() {
+		for i, v := range priorityTable["high"] {
+			cl.Do(v)
+			priorityTable["high"] = append(priorityTable["high"][:i], priorityTable["high"][i+1:]...)
+			return
+		}
+		for i, v := range priorityTable["medium"] {
+			cl.Do(v)
+			priorityTable["medium"] = append(priorityTable["medium"][:i], priorityTable["medium"][i+1:]...)
+			return
+		}
+		for i, v := range priorityTable["low"] {
+			cl.Do(v)
+			priorityTable["low"] = append(priorityTable["low"][:i], priorityTable["low"][i+1:]...)
+			return
+		}
+	})
 }

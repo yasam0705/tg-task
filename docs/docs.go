@@ -41,6 +41,13 @@ var doc = `{
                         "name": "text",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "priority message",
+                        "name": "priority",
+                        "in": "query",
+                        "required": true
                     }
                 ]
             }
@@ -61,6 +68,13 @@ var doc = `{
                         "type": "string",
                         "description": "message text",
                         "name": "text",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "priority message",
+                        "name": "priority",
                         "in": "query",
                         "required": true
                     }

@@ -18,6 +18,11 @@ paths:
         name: text
         required: true
         type: string
+      - description: priority message
+        in: query
+        name: priority
+        required: true
+        type: string
       produces:
       - application/json
       summary: Send message
@@ -31,6 +36,11 @@ paths:
       - description: message text
         in: query
         name: text
+        required: true
+        type: string
+      - description: priority message
+        in: query
+        name: priority
         required: true
         type: string
       produces:
